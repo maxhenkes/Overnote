@@ -1,0 +1,6 @@
+{
+  "extends": "tsconfig/react-library.json",
+  "include": ["vite.config.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

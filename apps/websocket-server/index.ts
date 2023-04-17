@@ -11,5 +11,9 @@ io.on('connection', (socket) => {
     socket.conn.on('close', (reason) => {
         console.log(reason);
     })
+    socket.on('draw', (p) => {
+        console.log(p)
+        socket.broadcast.emit('draw', p);
+    })
     console.log('connected')
 })

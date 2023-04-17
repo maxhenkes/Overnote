@@ -1,14 +1,27 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React, { Fragment, useEffect, useState } from "react";
 import "./App.css";
 import { socket } from "./socket";
 import { ConnectionState } from "./components/ConnectionState";
-import { ConnectionManager } from "./components/ConnectionManager";
+import { LoginBox } from "./components/LoginBox";
+import { Canvas } from "./components/Canvas";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme, useMediaQuery } from "@mui/material";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [isConnected, setIsConnected] = useState(socket.connected);
+
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
 
   useEffect(() => {
     const onConnect = () => {
@@ -29,10 +42,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <ConnectionState isConnected={isConnected} />
-      <ConnectionManager />
-    </div>
+    <Fragment>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <div className="App">{isConnected ? <Canvas /> : <LoginBox />}</div>
+      </ThemeProvider>
+    </Fragment>
   );
 }
 
